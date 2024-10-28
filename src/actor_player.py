@@ -5,7 +5,7 @@ import random
 from dog.dog_interface import DogPlayerInterface
 from dog.dog_actor import DogActor
 
-class ActorPlayer(DogPlayerInterface):
+class PlayerInterface(DogPlayerInterface):
     def __init__(self, root):
         self.root = root
         self.root.title("Codenames")
@@ -102,7 +102,7 @@ class ActorPlayer(DogPlayerInterface):
         self.hint_display_right.config(state=DISABLED)
 
     def start_match(self):
-        start_status = self.dog_server_interface.start_match(2)
+        start_status = self.dog_server_interface.start_match(4)
         message = start_status.get_message()
         messagebox.showinfo(message=message)
     
@@ -115,5 +115,5 @@ class ActorPlayer(DogPlayerInterface):
 
 if __name__ == "__main__":
     root = tk.Tk()
-    player_interface = ActorPlayer(root)
+    player_interface = PlayerInterface(root)
     root.mainloop()
