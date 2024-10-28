@@ -11,12 +11,12 @@ class PlayerInterface(DogPlayerInterface):
         self.root.title("Codenames")
         self.root.geometry("1100x400")
         
-        menubar = Menu(self.root)
-        game_menu = Menu(menubar, tearoff=0)
+        self.menubar = Menu(self.root)
+        game_menu = Menu(self.menubar, tearoff=0)
         game_menu.add_command(label="Start match", command=self.start_match)
         game_menu.add_command(label="Start game", command=self.start_game)
-        menubar.add_cascade(label="Game", menu=game_menu)
-        self.root.config(menu=menubar)
+        self.menubar.add_cascade(label="Game", menu=game_menu)
+        self.root.config(menu=self.menubar)
 
         self.card_frame = Frame(self.root, padx=10, pady=10)
         self.card_frame.grid(row=0, column=1, padx=10, pady=10)
