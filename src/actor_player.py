@@ -29,7 +29,7 @@ class PlayerInterface(DogPlayerInterface):
             row_buttons = []
             for col in range(5):
                 color = self.card_colors.pop(0)
-                button = Button(self.card_frame, text="Palavra", width=15, height=3, relief="solid", borderwidth=1, bg=color)
+                button = Button(self.card_frame, text="Palavra", width=15, height=3, relief="solid", borderwidth=1, bg=color, command=lambda r=row, c=col: self.virar_carta(r, c))
                 button.grid(row=row, column=col, padx=2, pady=2)
                 row_buttons.append(button)
             self.buttons.append(row_buttons)
@@ -90,6 +90,26 @@ class PlayerInterface(DogPlayerInterface):
         self.hint_display_right.config(state=DISABLED)
         
         self.hint_entry.delete(0, END)
+    
+    def virar_carta(self, row, col):
+        messagebox.showinfo("Carta Clicada", f"Carta ({row+1}, {col+1}) clicada")
+        self.send_move(row=row, col=col)
+
+    def send_move(self, row, col):
+        move_message = {
+            'match_status': 'progress',
+            'action': 'move',
+            'row': row,
+            'col': col,
+        }
+        self.dog_server_interface.send_move(move_message)
+    
+    def receive_move(self, message):
+        print("oioioi")
+        if message['action'] == 'move':
+            row = message['row']
+            col = message['col']
+            messagebox.showinfo("Carta Clicada", f"Carta ({row+1}, {col+1})")
 
     def skip_turn(self):
         self.hint_display_left.config(state=NORMAL)
@@ -102,7 +122,7 @@ class PlayerInterface(DogPlayerInterface):
         self.hint_display_right.config(state=DISABLED)
 
     def start_match(self):
-        start_status = self.dog_server_interface.start_match(4)
+        start_status = self.dog_server_interface.start_match(2)
         message = start_status.get_message()
         messagebox.showinfo(message=message)
     
